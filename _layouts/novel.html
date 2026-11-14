@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article>
+  <h1>{{ page.title | escape }}</h1>
+  {{ content }}
+
+  <h2>Table of contents</h2>
+  {% assign chapters = site.pages | where: "layout", "chapter" | where: "dir", page.dir | sort: "number" %}
+  {% if chapters.size > 0 %}
+    <ol class="chapters">
+    {% for chapter in chapters %}
+      <li value="{{ chapter.number }}">
+        <a href="{{ chapter.url | relative_url }}">{{ chapter.title | escape }}</a>
+      </li>
+    {% endfor %}
+    </ol>
+  {% else %}
+    <p>No chapters have been published yet.</p>
+  {% endif %}
+</article>

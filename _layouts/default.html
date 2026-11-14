@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang | escape }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title and page.title != site.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+</head>
+<body>
+  {% unless page.url == "/" %}
+  <header class="site-header">
+    <a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+  </header>
+  {% endunless %}
+  <main>
+    {{ content }}
+  </main>
+</body>
+</html>

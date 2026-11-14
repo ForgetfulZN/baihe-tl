@@ -1,0 +1,38 @@
+---
+layout: default
+---
+{% assign novels = site.pages | where: "layout", "novel" | where: "dir", page.dir %}
+{% assign novel = novels.first %}
+{% assign chapters = site.pages | where: "layout", "chapter" | where: "dir", page.dir | sort: "number" %}
+{% for chapter in chapters %}
+  {% if chapter.url == page.url %}
+    {% unless forloop.first %}
+      {% assign previous_index = forloop.index0 | minus: 1 %}
+      {% assign previous_chapter = chapters[previous_index] %}
+    {% endunless %}
+    {% unless forloop.last %}
+      {% assign next_chapter = chapters[forloop.index] %}
+    {% endunless %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+<article>
+  {% if novel %}
+  <p class="book-link"><a href="{{ novel.url | relative_url }}">{{ novel.title | escape }}</a></p>
+  {% endif %}
+  <h1>{{ page.title | escape }}</h1>
+  <div class="chapter-text">
+    {{ content }}
+  </div>
+  <nav class="chapter-nav" aria-label="Chapter navigation">
+    {% if previous_chapter %}
+      <a href="{{ previous_chapter.url | relative_url }}" rel="prev">Previous</a>
+    {% endif %}
+    {% if novel %}
+      <a href="{{ novel.url | relative_url }}">Contents</a>
+    {% endif %}
+    {% if next_chapter %}
+      <a href="{{ next_chapter.url | relative_url }}" rel="next">Next</a>
+    {% endif %}
+  </nav>
+</article>
