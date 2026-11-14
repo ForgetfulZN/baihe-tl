@@ -3,17 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title and page.title != site.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
+  <meta name="color-scheme" content="light dark">
+  <title>{% if page.title and page.title != site.title and page.url != "/" %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;display=swap">
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
 </head>
 <body>
-  {% unless page.url == "/" %}
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
-    <a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+    <div class="wrap header-inner">
+      <a class="site-brand" href="{{ '/' | relative_url }}">
+        <span class="brand-mark" aria-hidden="true"></span>
+        {{ site.title | escape }}
+      </a>
+      <nav aria-label="Main">
+        <a class="header-link" href="{{ '/' | relative_url }}#library">Library</a>
+      </nav>
+    </div>
   </header>
-  {% endunless %}
-  <main>
+  <main id="main-content">
     {{ content }}
   </main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+      <a href="{{ '/' | relative_url }}#library">Browse library <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
 </body>
 </html>

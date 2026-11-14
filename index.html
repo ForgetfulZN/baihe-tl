@@ -1,14 +1,34 @@
 ---
 layout: default
 ---
-<h1>{{ site.title | escape }}</h1>
 {% assign novels = site.pages | where: "layout", "novel" | sort_natural: "title" %}
-{% if novels.size > 0 %}
-  <ul class="novels">
-  {% for novel in novels %}
-    <li><a href="{{ novel.url | relative_url }}">{{ novel.title | escape }}</a></li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p>No novels have been published yet.</p>
-{% endif %}
+<div class="wrap home">
+  <header class="home-intro">
+    <h1>{{ site.title | escape }}</h1>
+  </header>
+
+  <section class="library" id="library" aria-labelledby="library-title">
+    <div class="section-heading">
+      <h2 id="library-title">The library</h2>
+      {% if novels.size > 0 %}
+        <span>{{ novels.size }} {% if novels.size == 1 %}novel{% else %}novels{% endif %}</span>
+      {% endif %}
+    </div>
+    {% if novels.size > 0 %}
+      <ul class="novel-list" role="list">
+      {% for novel in novels %}
+        {% assign chapters = site.pages | where: "layout", "chapter" | where: "dir", novel.dir %}
+        <li>
+          <a href="{{ novel.url | relative_url }}">
+            <h3>{{ novel.title | escape }}</h3>
+            <span class="novel-count">{{ chapters.size }} {% if chapters.size == 1 %}chapter{% else %}chapters{% endif %}</span>
+            <span class="row-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-state">No novels have been published yet.</p>
+    {% endif %}
+  </section>
+</div>

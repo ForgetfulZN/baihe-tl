@@ -16,23 +16,26 @@ layout: default
     {% break %}
   {% endif %}
 {% endfor %}
-<article>
-  {% if novel %}
-  <p class="book-link"><a href="{{ novel.url | relative_url }}">{{ novel.title | escape }}</a></p>
-  {% endif %}
-  <h1>{{ page.title | escape }}</h1>
+<article class="wrap reader">
+  <header class="reader-header">
+    {% if novel %}
+      <a class="back-link" href="{{ novel.url | relative_url }}"><span aria-hidden="true">←</span> {{ novel.title | escape }}</a>
+    {% endif %}
+    <p>Chapter {{ page.number | escape }}</p>
+    <h1>{{ page.title | escape }}</h1>
+  </header>
   <div class="chapter-text">
     {{ content }}
   </div>
   <nav class="chapter-nav" aria-label="Chapter navigation">
     {% if previous_chapter %}
-      <a href="{{ previous_chapter.url | relative_url }}" rel="prev">Previous</a>
+      <a href="{{ previous_chapter.url | relative_url }}" class="nav-prev" rel="prev"><span aria-hidden="true">←</span> Previous</a>
     {% endif %}
     {% if novel %}
-      <a href="{{ novel.url | relative_url }}">Contents</a>
+      <a href="{{ novel.url | relative_url }}" class="nav-contents">Contents</a>
     {% endif %}
     {% if next_chapter %}
-      <a href="{{ next_chapter.url | relative_url }}" rel="next">Next</a>
+      <a href="{{ next_chapter.url | relative_url }}" class="nav-next" rel="next">Next <span aria-hidden="true">→</span></a>
     {% endif %}
   </nav>
 </article>

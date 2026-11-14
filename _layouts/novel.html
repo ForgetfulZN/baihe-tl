@@ -1,21 +1,38 @@
 ---
 layout: default
 ---
-<article>
-  <h1>{{ page.title | escape }}</h1>
-  {{ content }}
+{% assign chapters = site.pages | where: "layout", "chapter" | where: "dir", page.dir | sort: "number" %}
+<article class="wrap novel-page">
+  <a class="back-link" href="{{ '/' | relative_url }}#library"><span aria-hidden="true">←</span> Library</a>
+  <header class="novel-header">
+    <h1>{{ page.title | escape }}</h1>
+    <div class="synopsis">{{ content }}</div>
+    {% if chapters.size > 0 %}
+      <a class="button button-primary" href="{{ chapters.first.url | relative_url }}">Start reading <span aria-hidden="true">→</span></a>
+    {% endif %}
+  </header>
 
-  <h2>Table of contents</h2>
-  {% assign chapters = site.pages | where: "layout", "chapter" | where: "dir", page.dir | sort: "number" %}
-  {% if chapters.size > 0 %}
-    <ol class="chapters">
-    {% for chapter in chapters %}
-      <li value="{{ chapter.number }}">
-        <a href="{{ chapter.url | relative_url }}">{{ chapter.title | escape }}</a>
-      </li>
-    {% endfor %}
-    </ol>
-  {% else %}
-    <p>No chapters have been published yet.</p>
-  {% endif %}
+  <section class="contents" aria-labelledby="contents-title">
+    <div class="section-heading">
+      <h2 id="contents-title">Table of contents</h2>
+      {% if chapters.size > 0 %}
+        <span>{{ chapters.size }} {% if chapters.size == 1 %}chapter{% else %}chapters{% endif %}</span>
+      {% endif %}
+    </div>
+    {% if chapters.size > 0 %}
+      <ol class="chapter-list" role="list">
+      {% for chapter in chapters %}
+        <li value="{{ chapter.number | escape }}">
+          <a href="{{ chapter.url | relative_url }}">
+            <span class="chapter-number"><span class="visually-hidden">Chapter </span>{{ chapter.number | escape }}</span>
+            <span>{{ chapter.title | escape }}</span>
+            <span class="row-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      {% endfor %}
+      </ol>
+    {% else %}
+      <p class="empty-state">No chapters have been published yet.</p>
+    {% endif %}
+  </section>
 </article>
